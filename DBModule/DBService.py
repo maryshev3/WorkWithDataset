@@ -73,7 +73,7 @@ class DBService:
 
         cursor.execute("SELECT \"group\" FROM groups WHERE groups.group_id = " + str(group_num) + ";")
 
-        group = cursor.fetchone()
+        group = cursor.fetchone()[0]
 
         cursor.close()
 
@@ -82,10 +82,7 @@ class DBService:
     def get_questions(self, group):
         cursor = self.__connection__.cursor()
 
-        cursor.execute("SELECT group_id FROM groups WHERE groups.group = " + str(group) + ";")
-        group = cursor.fetchone()
-
-        cursor.execute("SELECT question FROM questions INNER JOIN programs WHERE questions.group_id = " + str(group) + ";")
+        cursor.execute("SELECT question FROM questions INNER JOIN programs WHERE questions.group = " + str(group) + ";")
         questions = cursor.fetchall()
 
         cursor.close()

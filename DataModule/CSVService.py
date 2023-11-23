@@ -118,6 +118,35 @@ class CSVService:
             
             GroupsList = TematicsCSVFileRand['groups'].to_list()
             GroupsList.extend(NoTematicsCSVFileRand['groups'].to_list())
-            csv_file.loc[len(csv_file.index)] = [len(csv_file) + 1, group, id_direction_code, '', ' '.join(GroupsList).lower()]
+
+            j = 0
+            while j < len(GroupsList):
+                GroupsList[j] = del_punctuation(GroupsList[j], './\\!@#$%^&*()-+_?;\"\':`|<>[]')
+                j += 1
+
+            csv_file.loc[len(csv_file.index)] = [len(csv_file) + 1, group, id_direction_code, '', del_punctuation(' '.join(GroupsList).lower(), './\\!@#$%^&*()-+_?;\"\':`|<>[]')]
+
+        csv_file.to_csv(dataset_with_synthesize_path, index = False, sep=';')
+
+    def synthesize_zero_group(this, dataset_path, dataset_with_synthesize_path, notematics_publics_path, count_data = 1):
+        no_tematics_csv_file = pandas.read_csv(notematics_publics_path, delimiter=';')
+
+        #Формируем запись
+        csv_file = pandas.read_csv(dataset_path, delimiter=';')
+
+        for i in range(0, count_data):
+            id_direction_code = 0
+
+            #Оставляем случайные сообщества
+            NoTematicsCSVFileRand = no_tematics_csv_file.sample(n = 13)
+            
+            GroupsList = (NoTematicsCSVFileRand['groups'].to_list())
+
+            j = 0
+            while j < len(GroupsList):
+                GroupsList[j] = del_punctuation(GroupsList[j], './\\!@#$%^&*()-+_?;\"\':`|<>[]')
+                j += 1
+
+            csv_file.loc[len(csv_file.index)] = [len(csv_file) + 1, 0, id_direction_code, '', del_punctuation(' '.join(GroupsList).lower(), './\\!@#$%^&*()-+_?;\"\':`|<>[]')]
 
         csv_file.to_csv(dataset_with_synthesize_path, index = False, sep=';')
