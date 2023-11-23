@@ -1,8 +1,8 @@
-file1 = open('dataset.csv', 'r')
+file1 = open('NEW_TRAIN.csv', 'r')
 
 lines = file1.readlines()
 
-file1.close
+file1.close()
 
 # итерация по строкам
 line_i = 0

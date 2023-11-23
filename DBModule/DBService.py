@@ -37,7 +37,7 @@ class DBService:
     def is_popular_public(self, public_name):
         cursor = self.__connection__.cursor()
 
-        cursor.execute("SELECT count(*) FROM popular_publics WHERE popular_publics.public = \'" + public_name + "\';")
+        cursor.execute("SELECT count(*) FROM popular_public WHERE popular_public.public = \'" + public_name + "\';")
         count = cursor.fetchone()[0]
 
         cursor.close()
@@ -50,11 +50,11 @@ class DBService:
     def create_popular_publics(self, public_list):
         cursor = self.__connection__.cursor()
 
-        cursor.execute("DELETE FROM popular_publics;")
+        cursor.execute("DELETE FROM popular_public;")
         self.__connection__.commit()
 
         for public in public_list:
-            cursor.execute("INSERT INTO popular_publics VALUES (\'" + public + "\');")
+            cursor.execute("INSERT INTO popular_public VALUES (\'" + public + "\');")
 
         self.__connection__.commit()
         cursor.close()
